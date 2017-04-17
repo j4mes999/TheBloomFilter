@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package thebloomfilter;
 
 import java.util.ArrayList;
@@ -20,14 +16,14 @@ import org.apache.kafka.streams.kstream.KStreamBuilder;
 
 /**
  *
- * @author root
+ * @author Luis Gonzalez
  */
 public class TheBloomFilter {
 
-    public static final int N = 127;
+    public static final int N = 1048576;
     public static final int STARTNUM = 1000000000;
-    public static final int ELEMENTSNUM = 100;
-    public static final int MAXELEM = 450;
+    public static final int ELEMENTSNUM = 100000;
+    public static final int MAXELEM = 500000;
 
     /**
      * @param args the command line arguments
@@ -59,7 +55,7 @@ public class TheBloomFilter {
             public void apply(String k, Long v) {
 
                 count++;
-                System.out.println("hello");
+                
                 if (bloomFilter(bitVector, v)) {
                     elementsFiltered++;
                 }
@@ -146,6 +142,11 @@ public class TheBloomFilter {
         //Hash function 1
         indexes[0] = x % N;
         indexes[1] = y % N;
+        //The next hash functions were used in the second part
+        //indexes[0] = (int) ((11*l + 7) % N);
+        //indexes[1] = (int) ((7*l+5) % N);
+        //indexes[2] = (int) ((3*l+17) % N);
+        
 
         return indexes;
 
